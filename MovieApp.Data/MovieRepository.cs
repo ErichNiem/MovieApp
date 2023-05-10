@@ -16,7 +16,7 @@ namespace MovieApp.Data
 
         public async Task<IEnumerable<MovieDto>> GetAll()
         {
-            var query = "SELECT * FROM dbo.Movies";
+            var query = "SELECT * FROM dbo.Movies WHERE DateTimeDeleted IS NULL";
 
             using var connection = _context.CreateConnection();
 

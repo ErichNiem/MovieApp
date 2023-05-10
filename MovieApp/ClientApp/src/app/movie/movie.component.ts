@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit} from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 declare var window: any;
@@ -47,11 +47,10 @@ export class MovieComponent implements OnInit {
       if (this.movieId == 0) {
         alert(this.movieExistsMessage);
       }
-
+      this.addMovieModal.hide();
+      this.clearForm();
+      location.reload();
     }, error => console.error(error));
-
-    this.addMovieModal.hide();
-    this.clearForm();
   }
 
   updateModalOpen(updateId: number, @Inject('BASE_URL') baseUrl: string) {
@@ -78,9 +77,12 @@ export class MovieComponent implements OnInit {
       category: (<HTMLInputElement>document.getElementById("updateCategory")).value
     };
 
-    this.http.put(baseUrl + 'movie', movie).subscribe(result => { }, error => console.error(error));
-    this.updateMovieModal.hide();
-    this.clearForm();
+    this.http.put(baseUrl + 'movie', movie).subscribe(result => {
+      this.updateMovieModal.hide();
+      this.clearForm();
+      location.reload();
+    }, error => console.error(error));
+    
   }
 
   deleteMovie(deleteId: number, @Inject('BASE_URL') baseUrl: string) {
@@ -93,7 +95,8 @@ export class MovieComponent implements OnInit {
     };
 
     this.http.request('delete', baseUrl + 'movie', { body: movie }).
-    subscribe(result => { }, error => console.error(error));
+      subscribe(result => { location.reload() }, error => console.error(error));
+    
   }
 
   closeNoSave() {
