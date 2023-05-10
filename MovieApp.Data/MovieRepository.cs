@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Data.SqlClient;
 using MovieApp.Data.DataModels;
 using MovieApp.Data.Interfaces;
 using System.Data;
@@ -25,20 +26,33 @@ namespace MovieApp.Data
 
         public async Task<int> Add(MovieDto movie)
         {
-            var query = "INSERT INTO Movies (Title, Category, Rating, Description, DateTimeAdded) " +
-                "VALUES (@Title, @Category, @Rating, @Description, @DateTimeAdded)";
+            var query = "INSERT INTO Movies (Title, Category, Rating, Description, DateTimeAdded, DateTimeUpdated, DateTimeDeleted) " +
+                "OUTPUT INSERTED.ID " +
+                "VALUES (@Title, @Category, @Rating, @Description, @DateTimeAdded, @DateTimeUpdated, @DateTimeDeleted)";
             var parameters = new DynamicParameters();
             parameters.Add("Title", movie.Title, DbType.String);
             parameters.Add("Category", movie.Category, DbType.String);
             parameters.Add("Rating", movie.Rating, DbType.Int32);
             parameters.Add("Description", movie.Description, DbType.String);
             parameters.Add("DateTimeAdded", movie.DateTimeAdded, DbType.DateTime);
+            parameters.Add("DateTimeUpdated", null, DbType.DateTime);
+            parameters.Add("DateTimeDeleted", null, DbType.DateTime);
 
             using var connection = _context.CreateConnection();
 
-            var id = await connection.QuerySingleAsync<int>(query, parameters);
+            try
+            {
+                var id = await connection.QuerySingleAsync<int>(query, parameters);
+                return id;
+            }
+            catch(SqlException ex)
+            {
+                if(ex.Number == 2627)
+                    return 0;
 
-            return id;
+                throw;
+            }
+            
         }
 
         public async Task<MovieDto> GetById(int movieId)

@@ -37,11 +37,13 @@ namespace MovieApp.Host.Controllers
         }
 
         [HttpPost]
-        public async Task Add(Movie movie)
+        public async Task<int> Add(Movie movie)
         {
             var addMovie = _mapper.Map<Movie, AddMovieCommand>(movie);
 
-            await _commandDispatcher.Send<AddMovieCommand, int>(addMovie);
+            var id = await _commandDispatcher.Send<AddMovieCommand, int>(addMovie);
+
+            return id;
         }
 
         [HttpPut]
@@ -53,9 +55,9 @@ namespace MovieApp.Host.Controllers
         }
 
         [HttpDelete]
-        public async Task Delete(int movieId)
+        public async Task Delete(Movie movie)
         {
-            var deleteMovie = new DeleteMovieCommand { Id = movieId };
+            var deleteMovie = new DeleteMovieCommand { Id = movie.Id };
 
             await _commandDispatcher.Send(deleteMovie);
         }
