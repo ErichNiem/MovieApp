@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MovieApp.Data.Interfaces;
+﻿using MovieApp.Data.Interfaces;
 using MovieApp.Domain.Commands.Interfaces;
 
 namespace MovieApp.Domain.Commands.Movies
@@ -10,6 +9,7 @@ namespace MovieApp.Domain.Commands.Movies
         public DeleteMovieHandler(IMovieRespository movieRespository)
         {
             _movieRepository = movieRespository;
+
         }
 
         public async Task Handle(DeleteMovieCommand movie)

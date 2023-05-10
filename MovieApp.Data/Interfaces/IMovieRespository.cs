@@ -7,9 +7,9 @@ namespace MovieApp.Data.Interfaces
         Task<IEnumerable<MovieDto>> GetAll();
         Task<IEnumerable<MovieDto>> GetByDateRange(DateTime? fromDate, DateTime? toDate);
         Task<IEnumerable<MovieDto>> GetByIdRange(int? fromId, int? toId);
-        public Task<MovieDto> GetById(int movieId);
-        public Task<int> Add(MovieDto movie);
-        public Task Update(MovieDto movie);
-        public Task Delete(int movieId);
+        Task<MovieDto> GetById(int movieId);
+        Task<int> Add(MovieDto movie);
+        Task Update(MovieDto movie);
+        Task Delete(int movieId);
     }
 }

@@ -30,7 +30,7 @@ namespace MoviesApp.Unit.Tests
         }
 
         [TestMethod]
-        public async Task WhenAddMovieHandlerCalledWithValidAddMovieCommandObject_ReturnsInteger()
+        public async Task WhenAddMovieHandlerCalledWithValidAddMovieCommandObject_Create_MovieRepositoryCalled()
         {
             var addMovie = ArrangeNewAddMovieCommand();
 
@@ -42,11 +42,10 @@ namespace MoviesApp.Unit.Tests
 
             _mockMovieRepository.Verify(d => d.Add(It.IsAny<MovieDto>()), Times.Once);
             Assert.IsNotNull(newMovieId);
-            Assert.IsInstanceOfType(newMovieId, typeof(int));
         }
 
         [TestMethod]
-        public async Task WhenUpdateMovieHandlerCalled_WithValidUpdateMovieCommandObject_Update_MovieInDb()
+        public async Task WhenUpdateMovieHandlerCalled_WithValidUpdateMovieCommandObject_Update_MovieRepositoryCalled()
         {
             var updateMovie = ArrangeNewUpdateMovieCommand();
 
@@ -59,7 +58,7 @@ namespace MoviesApp.Unit.Tests
         }
 
         [TestMethod]
-        public async Task WhenDeleteMovieHandlerCalled_WithValidNewMovieCommandObject_Delete_MovieAccordingToSoftDeleteBoolDb()
+        public async Task WhenDeleteMovieHandlerCalled_WithValidNewMovieCommandObject_Delete_MovieRepositoryCalled()
         {
             var deleteMovie = ArrangeNewDeleteMovieCommand();
 
@@ -99,8 +98,7 @@ namespace MoviesApp.Unit.Tests
         {
             return new DeleteMovieCommand
             {
-                Id = 1,
-                SoftDelete = false,
+                Id = 1
             };
         }
     }
